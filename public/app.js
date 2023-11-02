@@ -1,61 +1,69 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import FBXLoader from "three-fbxloader-offical";
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x8fbcd4);
+
+// Create and position the camera
 const camera = new THREE.PerspectiveCamera(
-  75,
+  70,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
 );
+camera.position.set(0, 1, 3);
+camera.lookAt(0, 0, 0); // Set the camera to look at the model's origin
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+scene.add(ambientLight);
+
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("scene-container").appendChild(renderer.domElement);
 
-// Create and position the camera
-camera.position.set(0, 2, 5);
-
-// Create and position lights
-const directionalLight = new THREE.DirectionalLight(0x000000, 1);
-directionalLight.position.set(1, 1, 1);
-scene.add(directionalLight);
-
-let avatar;
-let clothing;
-
-// Load the avatar model
-const avatarLoader = new FBXLoader();
-avatarLoader.load('./models/body.fbx', (fbx) => {
-    avatar = fbx;
-    scene.add(avatar);
-    avatar.position.set(0, 0, 0); // Position the human model
-    avatar.scale.set(0.02, 0.02, 0.02); // Scale the human model if needed
+// controls for orbiting around the model
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.addEventListener("change", () => {
+  renderer.render(scene, camera);
 });
+controls.target.set(0, 1, 0);
+controls.update();
 
-// Load the clothing model
-// const clothingLoader = new FBXLoader();
-// clothingLoader.load('./models/hoodie.fbx', (fbx) => {
-//     clothing = fbx;
-//     if (avatar) {
-//         // Position the clothing on the human model
-//         // You may need to adjust the position, rotation, and scale
-//         clothing.position.set(0, 1.5, 0);
-//         avatar.add(clothing);
-//     }
-// });
+// Load the GLB model
+const loader = new GLTFLoader();
+loader.load(
+  "./models/jane.glb",
+  (glb) => {
+    const model = glb.scene;
+    scene.add(model);
+  }
+);
+
+// Load the cloth model and add it
+loader.load(
+  "./models/cloth1.glb",
+  (glb) => {
+    const cloth = glb.scene;
+    scene.add(cloth);
+    // these position are for the cloth model to fit
+    // we need to make the cloth model itself based on the avatar
+    // so we don't need to change the position and rotation
+    cloth.position.set(-0.08, -0.09, 0.1);
+    cloth.scale.set(1.01, 1.01, 1.01);
+    const degreesToRotate = THREE.MathUtils.degToRad(105);
+    cloth.rotateY(degreesToRotate);
+  }
+);
 
 // Animation and rendering loop
 const animate = () => {
-    requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 
-    if (avatar && clothing) {
-        // Add animation or physics logic to drape the clothing realistically
-        // For a simple example, you can rotate the clothing slightly to simulate movement
-        clothing.rotation.y += 0.01;
-    }
+  // Add any animation or interaction logic here
 
-    renderer.render(scene, camera);
+  renderer.render(scene, camera);
 };
 
 animate();
