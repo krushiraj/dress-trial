@@ -34,7 +34,7 @@ controls.update();
 // Load the GLB model
 const loader = new GLTFLoader();
 loader.load(
-  "./models/jane.glb",
+  "./models/avatar.glb",
   (glb) => {
     const model = glb.scene;
     scene.add(model);
@@ -43,16 +43,16 @@ loader.load(
 
 // Load the cloth model and add it
 loader.load(
-  "./models/cloth1.glb",
+  "./models/cloth.glb",
   (glb) => {
     const cloth = glb.scene;
     scene.add(cloth);
     // these position are for the cloth model to fit
     // we need to make the cloth model itself based on the avatar
     // so we don't need to change the position and rotation
-    cloth.position.set(-0.08, -0.09, 0.1);
-    cloth.scale.set(1.01, 1.01, 1.01);
-    const degreesToRotate = THREE.MathUtils.degToRad(105);
+    cloth.position.set(-0.2, 0.1, 0.05);
+    cloth.scale.set(1.02, 1.02, 1.02);
+    const degreesToRotate = THREE.MathUtils.degToRad(110);
     cloth.rotateY(degreesToRotate);
   }
 );
