@@ -50,8 +50,8 @@ loader.load(
     // these position are for the cloth model to fit
     // we need to make the cloth model itself based on the avatar
     // so we don't need to change the position and rotation
-    cloth.position.set(-0.2, 0.1, 0.05);
-    cloth.scale.set(1.02, 1.02, 1.02);
+    cloth.position.set(-0.25, 0.1, 0.1);
+    cloth.scale.set(1.05, 1.05, 1.05);
     const degreesToRotate = THREE.MathUtils.degToRad(110);
     cloth.rotateY(degreesToRotate);
   }
