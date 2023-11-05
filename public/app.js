@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import FBXLoader from "three-fbxloader-offical";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x8fbcd4);
@@ -31,31 +30,7 @@ controls.addEventListener("change", () => {
 controls.target.set(0, 1, 0);
 controls.update();
 
-// Load the GLB model
 const loader = new GLTFLoader();
-loader.load(
-  "./models/avatar.glb",
-  (glb) => {
-    const model = glb.scene;
-    scene.add(model);
-  }
-);
-
-// Load the cloth model and add it
-loader.load(
-  "./models/cloth.glb",
-  (glb) => {
-    const cloth = glb.scene;
-    scene.add(cloth);
-    // these position are for the cloth model to fit
-    // we need to make the cloth model itself based on the avatar
-    // so we don't need to change the position and rotation
-    cloth.position.set(-0.25, 0.1, 0.1);
-    cloth.scale.set(1.05, 1.05, 1.05);
-    const degreesToRotate = THREE.MathUtils.degToRad(110);
-    cloth.rotateY(degreesToRotate);
-  }
-);
 
 // Animation and rendering loop
 const animate = () => {
@@ -67,3 +42,33 @@ const animate = () => {
 };
 
 animate();
+
+// check whenever option is changed in any of the select
+// and change the model accordingly
+const avatarSelect = document.getElementById("avatar-select");
+const clothSelect = document.getElementById("cloth-select");
+
+avatarSelect.addEventListener("change", (e) => {
+  const avatar = e.target.value;
+  loader.load(`./models/${avatar}.glb`, (glb) => {
+    const model = glb.scene;
+    scene.add(model);
+    animate();
+  });
+});
+
+clothSelect.addEventListener("change", (e) => {
+  const cloth = e.target.value;
+  loader.load(`./models/${cloth}.glb`, (glb) => {
+    const model = glb.scene;
+    scene.add(model);
+    // these position are for the cloth model to fit
+    // we need to make the cloth model itself based on the avatar
+    // so we don't need to change the position and rotation
+    model.position.set(-0.25, 0.1, 0.1);
+    model.scale.set(1.05, 1.05, 1.05);
+    const degreesToRotate = THREE.MathUtils.degToRad(110);
+    model.rotateY(degreesToRotate);
+    animate();
+  });
+});

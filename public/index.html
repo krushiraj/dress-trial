@@ -6,7 +6,25 @@
     <title>Clothing Try-On</title>
   </head>
   <body>
-    <div id="scene-container"></div>
+    <div style="display: flex; flex-direction: column; height: 100vh">
+      <div style="display: flex; flex-direction: row; height: 100%">
+        <select id="avatar-select" style="width: 200px; height: 100%">
+          <!-- options for avatars -->
+          <option value="none">None</option>
+          <option value="avatar">Model 1</option>
+          <option value="model2">Model 2</option>
+          <option value="model3">Model 3</option>
+        </select>
+        <select id="cloth-select" style="width: 200px; height: 100%">
+          <!-- options for clothes -->
+          <option value="none">None</option>
+          <option value="cloth">Clothing 1</option>
+          <option value="clothing2">Clothing 2</option>
+          <option value="clothing3">Clothing 3</option>
+        </select>
+      </div>
+      <div id="scene-container"></div>
+    </div>
 
     <script src="dist/bundle.js"></script>
   </body>
