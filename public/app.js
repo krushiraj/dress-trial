@@ -48,27 +48,33 @@ animate();
 const avatarSelect = document.getElementById("avatar-select");
 const clothSelect = document.getElementById("cloth-select");
 
+let currentAvatar = null;
+let currentCloth = null;
+
 avatarSelect.addEventListener("change", (e) => {
   const avatar = e.target.value;
+  if (currentAvatar) {
+    scene.remove(currentAvatar);
+  }
   loader.load(`./models/${avatar}.glb`, (glb) => {
-    const model = glb.scene;
-    scene.add(model);
+    currentAvatar = glb.scene;
+    scene.add(currentAvatar);
     animate();
   });
 });
 
 clothSelect.addEventListener("change", (e) => {
   const cloth = e.target.value;
+  if (currentCloth) {
+    scene.remove(currentCloth);
+  }
   loader.load(`./models/${cloth}.glb`, (glb) => {
-    const model = glb.scene;
-    scene.add(model);
-    // these position are for the cloth model to fit
-    // we need to make the cloth model itself based on the avatar
-    // so we don't need to change the position and rotation
-    model.position.set(-0.25, 0.1, 0.1);
-    model.scale.set(1.05, 1.05, 1.05);
+    currentCloth = glb.scene;
+    scene.add(currentCloth);
+    currentCloth.position.set(-0.25, 0.1, 0.1);
+    currentCloth.scale.set(1.05, 1.05, 1.05);
     const degreesToRotate = THREE.MathUtils.degToRad(110);
-    model.rotateY(degreesToRotate);
+    currentCloth.rotateY(degreesToRotate);
     animate();
   });
 });
