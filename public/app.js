@@ -47,6 +47,8 @@ animate();
 // and change the model accordingly
 const avatarSelect = document.getElementById("avatar-select");
 const clothSelect = document.getElementById("cloth-select");
+const colorSelect = document.getElementById("color-select");
+const sizeSelect = document.getElementById("size-select");
 
 let currentAvatar = null;
 let currentCloth = null;
@@ -63,12 +65,16 @@ avatarSelect.addEventListener("change", (e) => {
   });
 });
 
-clothSelect.addEventListener("change", (e) => {
-  const cloth = e.target.value;
+clothSelect.addEventListener("change", changeCloth);
+
+const changeCloth = () => {
+  const cloth = clothSelect.value;
+  const color = colorSelect.value;
+  const size = sizeSelect.value;
   if (currentCloth) {
     scene.remove(currentCloth);
   }
-  loader.load(`./models/${cloth}.glb`, (glb) => {
+  loader.load(`./models/${color}_${size}_${cloth}.glb`, (glb) => {
     currentCloth = glb.scene;
     scene.add(currentCloth);
     currentCloth.position.set(-0.25, 0.1, 0.1);
@@ -77,4 +83,4 @@ clothSelect.addEventListener("change", (e) => {
     currentCloth.rotateY(degreesToRotate);
     animate();
   });
-});
+};
