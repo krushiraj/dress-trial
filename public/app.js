@@ -65,8 +65,6 @@ avatarSelect.addEventListener("change", (e) => {
   });
 });
 
-clothSelect.addEventListener("change", changeCloth);
-
 const changeCloth = () => {
   const cloth = clothSelect.value;
   const color = colorSelect.value;
@@ -74,13 +72,19 @@ const changeCloth = () => {
   if (currentCloth) {
     scene.remove(currentCloth);
   }
+  // check if color, size and cloth are not none
+  if (cloth === "none" || color === "none" || size === "none") {
+    return;
+  }
   loader.load(`./models/${color}_${size}_${cloth}.glb`, (glb) => {
     currentCloth = glb.scene;
     scene.add(currentCloth);
-    currentCloth.position.set(-0.25, 0.1, 0.1);
-    currentCloth.scale.set(1.05, 1.05, 1.05);
-    const degreesToRotate = THREE.MathUtils.degToRad(110);
-    currentCloth.rotateY(degreesToRotate);
+    currentCloth.position.set(-0.25, -0.9, 0.3);
+    currentCloth.scale.set(2, 2, 2);
     animate();
   });
 };
+
+clothSelect.addEventListener("change", changeCloth);
+colorSelect.addEventListener("change", changeCloth);
+sizeSelect.addEventListener("change", changeCloth);
