@@ -30,8 +30,6 @@ controls.addEventListener("change", () => {
 controls.target.set(0, 1, 0);
 controls.update();
 
-const loader = new GLTFLoader();
-
 // Animation and rendering loop
 const animate = () => {
   requestAnimationFrame(animate);
@@ -50,22 +48,11 @@ const clothSelect = document.getElementById("cloth-select");
 const colorSelect = document.getElementById("color-select");
 const sizeSelect = document.getElementById("size-select");
 
-let currentAvatar = null;
 let currentCloth = null;
-
-avatarSelect.addEventListener("change", (e) => {
-  const avatar = e.target.value;
-  if (currentAvatar) {
-    scene.remove(currentAvatar);
-  }
-  loader.load(`./models/${avatar}.glb`, (glb) => {
-    currentAvatar = glb.scene;
-    scene.add(currentAvatar);
-    animate();
-  });
-});
+const loader = new GLTFLoader();
 
 const changeCloth = () => {
+  const avatar = avatarSelect.value;
   const cloth = clothSelect.value;
   const color = colorSelect.value;
   const size = sizeSelect.value;
@@ -73,10 +60,10 @@ const changeCloth = () => {
     scene.remove(currentCloth);
   }
   // check if color, size and cloth are not none
-  if (cloth === "none" || color === "none" || size === "none") {
+  if (avatar === "none" || cloth === "none" || color === "none" || size === "none") {
     return;
   }
-  loader.load(`./models/${color}_${size}_${cloth}.glb`, (glb) => {
+  loader.load(`./models/${avatar}_${color}_${size}_${cloth}.glb`, (glb) => {
     currentCloth = glb.scene;
     scene.add(currentCloth);
     currentCloth.position.set(-0.25, -0.9, 0.3);
