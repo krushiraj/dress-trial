@@ -6,12 +6,13 @@
     <title>Clothing Try-On</title>
   </head>
   <body>
-    <div style="display: flex; flex-direction: column; height: 100vh">
-      <div style="display: flex; flex-direction: row; height: 100%">
+    <div style="display: flex; flex-direction: column; height: 100vh; margin: 0; padding: 0;">
+      <div style="display: flex; flex-direction: row;">
         <select id="avatar-select" style="width: 200px; height: 100%">
           <!-- options for avatars -->
           <option value="none">None</option>
-          <option value="avatar">Model 1</option>
+          <option value="amy">Amy</option>
+          <option value="jane">Jane</option>
         </select>
         <select id="cloth-select" style="width: 200px; height: 100%">
           <!-- options for clothes -->
@@ -31,10 +32,48 @@
           <option value="lg">Large</option>
           <option value="xl">Extra Large</option>
         </select>
+        <button onclick="showVideo()">Show/Hide Render</button>
       </div>
       <div id="scene-container"></div>
+      <video style="margin: 0; padding: 0;" id="video" width="100%" height="100%" autoplay></video>
     </div>
 
     <script src="dist/bundle.js"></script>
+    <script>
+      function toggleVideo(show) {
+        // should replace renderer with video if show is true
+        // should replace video with renderer if show is false
+        if (show) {
+          document.getElementById("scene-container").style.display = "none";
+          document.getElementById("video").style.display = "block";
+        } else {
+          document.getElementById("scene-container").style.display = "block";
+          document.getElementById("video").style.display = "none";
+        }
+      }
+
+      function showVideo() {
+        const isVideo = document.getElementById("video").style.display === "block";
+        toggleVideo(!isVideo);
+
+        if (isVideo) {
+          return;
+        }
+
+        const avatar = document.getElementById("avatar-select").value;
+        const cloth = document.getElementById("cloth-select").value;
+        const color = document.getElementById("color-select").value;
+        const size = document.getElementById("size-select").value;
+
+        // video controls should be hidden always
+        document.getElementById("video").controls = false;
+
+        // video source same as model source
+        document.getElementById(
+          "video"
+        ).src = `./renders/${avatar}_${color}_${size}_${cloth}.mp4`;
+        document.getElementById("video").play();
+      }
+    </script>
   </body>
 </html>

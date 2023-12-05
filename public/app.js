@@ -3,7 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x8fbcd4);
+scene.background = new THREE.Color(0x000000);
 
 // Create and position the camera
 const camera = new THREE.PerspectiveCamera(
@@ -72,6 +72,7 @@ const changeCloth = () => {
   });
 };
 
+avatarSelect.addEventListener("change", changeCloth);
 clothSelect.addEventListener("change", changeCloth);
 colorSelect.addEventListener("change", changeCloth);
 sizeSelect.addEventListener("change", changeCloth);
